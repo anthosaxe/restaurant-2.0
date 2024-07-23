@@ -1,6 +1,6 @@
-#restaurant2.0
+# restaurant2.0
 
-##todolist:
+## todolist:
 - mettre à jour la page form
 - bouton submit fonctionnel
 - creation de la db pour le form
