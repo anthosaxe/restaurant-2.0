@@ -1,5 +1,12 @@
-#the dream 2
+#restaurant2.0
 
-another setup of the dream project where i changed the db from mariadb to mysql 
-
-here the fetched dara can be put in the db
+##todolist:
+- mettre à jour la page form
+- bouton submit fonctionnel
+- creation de la db pour le form
+- creation de la page backoffice
+- 3 onglets sur la page :
+    - message
+    - guest book
+    - gallery
+- deploy
