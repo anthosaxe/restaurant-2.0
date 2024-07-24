@@ -35,41 +35,35 @@
                     <th scope="col" class="px-6 py-3">
                         Message
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 text-center">
                         Remove button
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td class="px-6 py-4">
-                        X
-                    </td>    
-                    <td class="px-6 py-4">
-                        first name
-                    </td>
-                    <td class="px-6 py-4">
-                        last name
-                    </td>
-                    <td class="px-6 py-4">
-                        subject
-                    </td>
-                    <td class="px-6 py-4">
-                        email
-                    </td>
-                    <td class="px-6 py-4">
-                        message
-                    </td>
-                    <td class="px-6 py-4 flex justify-center">
-                        <button class="btn-cross">
-                            <i class="fas fa-times" style="color: red; font-size: 16px;"></i>
-                        </button>
-                    </td>
-                </tr>
-                <?php getfromdb();?>
+                <?php getfromdb(); ?>
             </tbody>
         </table>
     </div>
+
+    <script>
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                let bid = button.getAttribute("id");
+                rm_db(bid);
+            });
+        });
+
+        function rm_db(id) {
+            fetch(`delete.php?id=${id}`, {
+                    method: 'GET'
+                }).then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    location.reload;
+                });
+        }
+    </script>
 
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -117,26 +111,27 @@
         }
     }
 
-    function getfromdb() {
+    function getfromdb()
+    {
         $host = 'db';
         $user = 'user';
         $pass = 'pass';
         $dbn = 'mydb';
-    
+
         try {
             $dsn = "mysql:host=$host;dbname=$dbn";
             $pdo = new PDO($dsn, $user, $pass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+
             $sql = "SELECT * FROM `client`";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
-    
+
             // Fetch all results as associative arrays
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
+
             // Display results in HTML table
-        
+
             foreach ($results as $row) {
                 echo '<tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">';
                 echo "<td class='px-6 py-4'>" . htmlspecialchars($row['id']) . "</td>";
@@ -146,13 +141,11 @@
                 echo "<td class='px-6 py-4'>" . htmlspecialchars($row['email']) . "</td>";
                 echo "<td class='px-6 py-4'>" . htmlspecialchars($row['message']) . "</td>";
                 echo "<td class='px-6 py-4 flex justify-center'>";
-                echo "<button>
+                echo "<button id='" . htmlspecialchars($row['id']) . "'>
                             <i class='fas fa-times' style='color: red; font-size: 16px;'></i>
                         </button>";
                 echo "</tr>";
             }
-            
-            
         } catch (PDOException $e) {
             echo 'Connection failed: ' . $e->getMessage();
             exit;
