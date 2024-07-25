@@ -89,6 +89,47 @@
       class="h-60 bg-repeat bg-cover bg-center bg-[url('https://www.la-cuisine-japonaise.com/wp-content/uploads/sites/206/2014/06/nourriture-japonaise.jpg')]">
     </div>
   </div>
+  <h1 class="py-3 text-center bg-orange-700 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Guestbook message</h1>
+  <form class="bg-orange-700 text-center" method="post" action="src/html/backoffice.php" id="myForm">
+    <label for="name">Nom:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="mail">Email:</label><br>
+    <input id="mail" name="mail" required><br><br>
+
+    <label for="msg">Message:</label><br>
+    <textarea id="msg" name="msg" rows="4" cols="50" required></textarea><br><br>
+
+    <button class="border bg-blue-600 p-2 mb-5" type="submit" name="submit" id="submit">Submit</button>
+
+    <div id="guestbook">
+
+    </div>
+</form>
+
+<script>
+  document.getElementById('myForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Empêche l'envoi du formulaire et la redirection
+
+      const formData = new FormData(this); // Récupère les données du formulaire
+
+      fetch('src/html/backoffice.php', {
+          method: 'POST',
+          body: formData
+      })
+          .then(response => response.text())
+          .then(data => {
+              // Traitement des données de la réponse ici
+              alert('Formulaire envoyé avec succès');
+              console.log(data); // Affiche les données retournées par backoffice.php
+              this.reset();
+          })
+          .catch(error => {
+              console.error('Erreur:', error);
+          });
+  });
+</script>
+
 </body>
 
 </html>
